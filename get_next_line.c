@@ -6,7 +6,7 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:54:04 by jorge             #+#    #+#             */
-/*   Updated: 2024/11/20 08:11:45 by jorge            ###   ########.fr       */
+/*   Updated: 2024/11/20 18:37:42 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ char    *seg_rest(char *buff)
     temp = ft_strchr(buff, '\n');
     if (!temp)
         return (NULL);
-    size_rest = ft_strlen(temp);
-    rest = ft_calloc(size_rest, 1); 
+    size_rest = ft_strlen(temp) + 1;
+    rest = ft_calloc(size_rest + 1, sizeof(char)); 
     if (!rest)
         return (NULL);
     ft_memcpy(rest, ft_strchr(buff, '\n') + 1, size_rest);
@@ -41,9 +41,9 @@ char    *seg_line(char *buff)
 
     temp = ft_strchr(buff, '\n');
     if (!temp)
-        return (NULL);
-    size_line = ft_strlen(buff) - ft_strlen(temp);
-    line = ft_calloc(size_line, 1); 
+        return (buff);
+    size_line = ft_strlen(buff) - ft_strlen(temp) + 1;
+    line = ft_calloc(size_line + 1, sizeof(char)); 
     if (!size_line)
         return (NULL);
     ft_memcpy(line, buff, size_line);
@@ -51,26 +51,29 @@ char    *seg_line(char *buff)
 }
 
 // ESTA FUNCION NOS DEVUELVE UN BUFFER ENTERO LEIDO DE UN FD
-
-char    *read_buff(int fd)
+char    *read_buff(int fd, char *aux)
 {
     char    *buff;
     int     count;
-    char    *aux;
+    char    *tmp;
 
-    buff = ft_calloc(BUFFER_SIZE, sizeof(char));
+    buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
     if (!buff)
-        return (NULL);
-    aux = malloc(sizeof(char));
-    if (!aux)
         return (NULL);
     count = 1;
     while (count > 0 && !ft_strchr(aux, '\n'))
     {
         count = read(fd, buff, BUFFER_SIZE);
         if (count < 0)
-            return (NULL);
-        aux = ft_strjoin(aux, buff);
+            return (free(buff), NULL);
+        if (!count)
+            return (free(buff), aux);
+        buff[count] = '\0';
+        tmp = ft_strjoin(aux, buff);
+        free(aux);
+        if (!tmp)
+            return (free(buff), NULL);
+        aux = tmp;
     }
     free(buff);
     return (aux);
@@ -84,10 +87,11 @@ char    *get_next_line(int fd)
     
     if (fd < 0  || BUFFER_SIZE <= 0)
         return (NULL);
-    buff = read_buff(fd);
+    buff = read_buff(fd, rest);
+    if (!buff)
+        return (free(rest), NULL);
     line = seg_line(buff);
-    if (rest)
-        line = ft_strjoin(rest, line);
+    free(rest);
     rest = seg_rest(buff);
     free(buff);
     return (line);

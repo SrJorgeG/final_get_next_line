@@ -15,7 +15,7 @@
 size_t	ft_strlen(char *s)
 {
 	size_t	i;
-	
+
 	i = 0;
 	if (!s)
 		return (0);
@@ -29,13 +29,11 @@ char	*ft_strchr(char *s, int c)
 	size_t	i;
 	size_t	len;
 
-	i = -1;
+	i = 0;
 	len = ft_strlen(s);
-	if (!s)
-		return (NULL);
-	while ((++i) < len)
-		if (s[i] == c)
-			return (&s[i]);
+	while (s && i < len)
+		if (s[i++] == c)
+			return (&s[i - 1]);
 	return (NULL);
 }
 
@@ -55,15 +53,18 @@ void	*ft_memcpy(char *dst, char *src, size_t n)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*sd;
+	size_t	s1_len;
+	size_t	s2_len;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (NULL);
-	sd = ft_calloc(sizeof(char), (ft_strlen(s1) + ft_strlen(s2) + 1));
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	sd = ft_calloc(sizeof(char), (s1_len + s2_len + 1));
 	if (!sd)
 		return (NULL);
-	ft_memcpy(sd, s1, ft_strlen(s1));
-	ft_memcpy(sd + ft_strlen(s1), s2, ft_strlen(s2));
-	free(s1);
+	ft_memcpy(sd, s1, s1_len);
+	ft_memcpy(sd + s1_len, s2, s2_len);
     return (sd);
 }
 
