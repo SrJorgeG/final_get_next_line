@@ -20,14 +20,16 @@ char    *seg_rest(char *buff)
     int     size_rest;
     char    *temp;
     
-    temp = ft_strchr(buff, '\n');
+    temp = ft_strchr(buff, '\n') + 1;
     if (!temp)
         return (NULL);
-    size_rest = ft_strlen(temp) + 1;
+    if (!ft_strlen(temp))
+        return (NULL);
+    size_rest = ft_strlen(temp);   
     rest = ft_calloc(size_rest + 1, sizeof(char)); 
     if (!rest)
         return (NULL);
-    ft_memcpy(rest, ft_strchr(buff, '\n') + 1, size_rest);
+    ft_memcpy(rest, temp + 1, size_rest);
     return (rest);
 }
 
@@ -51,12 +53,16 @@ char    *seg_line(char *buff)
 }
 
 // ESTA FUNCION NOS DEVUELVE UN BUFFER ENTERO LEIDO DE UN FD
-char    *read_buff(int fd, char *aux)
+char    *read_buff(int fd)
 {
     char    *buff;
     int     count;
     char    *tmp;
+    char    *aux;
 
+    aux = malloc(sizeof(char));
+    if (!aux)
+        return (NULL);
     buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
     if (!buff)
         return (NULL);
@@ -87,7 +93,7 @@ char    *get_next_line(int fd)
     
     if (fd < 0  || BUFFER_SIZE <= 0)
         return (NULL);
-    buff = read_buff(fd, rest);
+    buff = read_buff(fd);
     if (!buff)
         return (free(rest), NULL);
     line = seg_line(buff);
