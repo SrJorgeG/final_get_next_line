@@ -16,21 +16,19 @@
 
 char    *seg_rest(char *buff)
 {
-    char    *rest;
+    char    *rst;
     int     size_rest;
     char    *temp;
     
-    temp = ft_strchr(buff, '\n') + 1;
+    temp = ft_strchr(buff, '\n');
     if (!temp)
         return (NULL);
-    if (!ft_strlen(temp))
+    size_rest = ft_strlen(++temp);   
+    rst = ft_calloc(size_rest + 1, sizeof(char)); 
+    if (!rst)
         return (NULL);
-    size_rest = ft_strlen(temp);   
-    rest = ft_calloc(size_rest + 1, sizeof(char)); 
-    if (!rest)
-        return (NULL);
-    ft_memcpy(rest, temp + 1, size_rest);
-    return (rest);
+    ft_memcpy(rst, temp, size_rest);
+    return (rst);
 }
 
 // ESTA FUNCION DEVUELVE LA LINEA QUE QUEREMOS DEVOLVER DEL BUFFER LEIDO 
@@ -44,61 +42,52 @@ char    *seg_line(char *buff)
     temp = ft_strchr(buff, '\n');
     if (!temp)
         return (buff);
-    size_line = ft_strlen(buff) - ft_strlen(temp) + 1;
+    size_line = ft_strlen(buff) - ft_strlen(temp) - 1;
+//    aqui tienes el tercer leak
     line = ft_calloc(size_line + 1, sizeof(char)); 
-    if (!size_line)
+    if (!line)
         return (NULL);
     ft_memcpy(line, buff, size_line);
     return (line);
 }
 
 // ESTA FUNCION NOS DEVUELVE UN BUFFER ENTERO LEIDO DE UN FD
-char    *read_buff(int fd)
-{
-    char    *buff;
-    int     count;
-    char    *tmp;
-    char    *aux;
 
-    aux = malloc(sizeof(char));
-    if (!aux)
-        return (NULL);
-    buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-    if (!buff)
-        return (NULL);
+char *read_buff(int fd, char *stat)
+{
+    char    buff[BUFFER_SIZE + 1];
+    int     count;
+
     count = 1;
-    while (count > 0 && !ft_strchr(aux, '\n'))
+    while (count > 0 && !ft_strchr(stat, '\n'))
     {
         count = read(fd, buff, BUFFER_SIZE);
-        if (count < 0)
-            return (free(buff), NULL);
-        if (!count)
-            return (free(buff), aux);
+        if (count <= 0)
+        {
+            if (count == -1)
+                return (free(stat), NULL);
+            return NULL;
+        }
         buff[count] = '\0';
-        tmp = ft_strjoin(aux, buff);
-        free(aux);
-        if (!tmp)
-            return (free(buff), NULL);
-        aux = tmp;
+//        el join es el primer leak, tienes que usar un temporal
+        stat = ft_strjoin(stat, buff);
     }
-    free(buff);
-    return (aux);
+    return (stat);
 }
 
 char    *get_next_line(int fd)
 {
     static char *rest;
     char        *line;
-    char        *buff;
     
-    if (fd < 0  || BUFFER_SIZE <= 0)
+    if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-    buff = read_buff(fd);
-    if (!buff)
+    rest = read_buff(fd, rest);
+    if (!rest)
+        return (NULL);
+    line = seg_line(rest);
+    if (!line)
         return (free(rest), NULL);
-    line = seg_line(buff);
-    free(rest);
-    rest = seg_rest(buff);
-    free(buff);
+    rest = seg_rest(rest);
     return (line);
 }

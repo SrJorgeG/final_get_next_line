@@ -25,7 +25,8 @@
 # include <stdint.h>
 
 char	*get_next_line(int fd);
-char    *read_buff(int fd);
+//char    *read_buff(int fd);
+char    *read_buff(int fd, char *stat);
 char	*seg_line(char *buff);
 char	*seg_rest(char *buff);
 size_t	ft_strlen(char *s);

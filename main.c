@@ -17,22 +17,24 @@ int main (void)
 	int fd = open("file.txt", O_RDONLY);
 	char	*line;
 
-	while ((line = get_next_line(fd)))
+	while ((line = get_next_line(fd)) != NULL)
 	{
 		printf("%s\n", line);
 		free(line);
 	}
-	// line = get_next_line(fd);
+	close(fd);
+	// 
+	line = get_next_line(fd);
+	printf("\n%s\n",line);
+	free(line);
+	line = get_next_line(fd);
+	printf("\n%s\n",line);
+	free(line);
+    //line = get_next_line(fd);
+	//printf("\n%s\n",line);
+    //line = get_next_line(fd);
 	// printf("\n%s\n",line);
-	// free(line);
-	// line = get_next_line(fd);
+	//line = get_next_line(fd);
 	// printf("\n%s\n",line);
-	// free(line);
-    // line = get_next_line(fd);
-	// printf("\n%s\n",line);
-    // line = get_next_line(fd);
-	// printf("\n%s\n",line);
-	// line = get_next_line(fd);
-	// printf("\n%s\n",line);
-	//free (line);
+	// free (line);
 }
