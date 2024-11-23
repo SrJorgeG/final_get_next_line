@@ -42,8 +42,7 @@ char    *seg_line(char *buff)
     temp = ft_strchr(buff, '\n');
     if (!temp)
         return (buff);
-    size_line = ft_strlen(buff) - ft_strlen(temp) - 1;
-//    aqui tienes el tercer leak
+    size_line = ft_strlen(buff) - ft_strlen(temp);
     line = ft_calloc(size_line + 1, sizeof(char)); 
     if (!line)
         return (NULL);
@@ -53,41 +52,42 @@ char    *seg_line(char *buff)
 
 // ESTA FUNCION NOS DEVUELVE UN BUFFER ENTERO LEIDO DE UN FD
 
-char *read_buff(int fd, char *stat)
+int    read_buff(int fd, char **stat)
 {
     char    buff[BUFFER_SIZE + 1];
     int     count;
 
     count = 1;
-    while (count > 0 && !ft_strchr(stat, '\n'))
+    while (count > 0 && !ft_strchr(*stat, '\n'))
     {
         count = read(fd, buff, BUFFER_SIZE);
-        if (count <= 0)
-        {
-            if (count == -1)
-                return (free(stat), NULL);
-            return NULL;
-        }
+        if (count <= 0 )
+            return (-1);
+        if (count == 0)
+            return (-1);
         buff[count] = '\0';
-//        el join es el primer leak, tienes que usar un temporal
-        stat = ft_strjoin(stat, buff);
+        *stat = ft_strjoin(*stat, buff);
     }
-    return (stat);
+    return (count);
 }
 
 char    *get_next_line(int fd)
 {
     static char *rest;
     char        *line;
+    char        *remaining;
+    int         count;
     
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-    rest = read_buff(fd, rest);
-    if (!rest)
-        return (NULL);
+    count = read_buff(fd, &rest);
+    if (count == -1)
+        return (free(rest), NULL);
     line = seg_line(rest);
     if (!line)
         return (free(rest), NULL);
-    rest = seg_rest(rest);
+    remaining = seg_rest(rest);
+    free(rest);
+    rest = remaining;
     return (line);
 }

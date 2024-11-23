@@ -58,20 +58,19 @@ char	*ft_strjoin(char *s1, char *s2)
 	
 	if (!s1)
 	{
-//		aqui tienes el segundo leak
-		s1 = malloc(sizeof(char) * 42);
+		s1 = malloc(sizeof(char) * 1);
 		if (!s1)
 			return (NULL);
 		s1[0] = '\0';
 	}
 	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2); //Should never be empty unless read() call returned (0)
-
+	s2_len = ft_strlen(s2);
 	sd = ft_calloc(sizeof(char), (s1_len + s2_len + 1));
 	if (!sd)
 		return (NULL);
 	ft_memcpy(sd, s1, s1_len);
 	ft_memcpy(sd + s1_len, s2, s2_len);
+	free(s1);
 	return (sd);
 }
 

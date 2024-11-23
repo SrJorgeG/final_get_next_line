@@ -21,15 +21,9 @@ int main (void)
 	{
 		printf("%s\n", line);
 		free(line);
-	}
+	}		
+	free(line);
 	close(fd);
-	// 
-	line = get_next_line(fd);
-	printf("\n%s\n",line);
-	free(line);
-	line = get_next_line(fd);
-	printf("\n%s\n",line);
-	free(line);
     //line = get_next_line(fd);
 	//printf("\n%s\n",line);
     //line = get_next_line(fd);
