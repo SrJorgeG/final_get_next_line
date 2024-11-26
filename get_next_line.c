@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:54:04 by jorge             #+#    #+#             */
-/*   Updated: 2024/11/20 18:37:42 by jorge            ###   ########.fr       */
+/*   Updated: 2024/11/26 01:31:42 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char    *seg_rest(char *buff)
     int     size_rest;
     char    *temp;
     
+    if (!buff)
+        return (NULL);
     temp = ft_strchr(buff, '\n');
     if (!temp)
         return (NULL);
@@ -78,16 +80,16 @@ char    *get_next_line(int fd)
 
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-        count = read_buff(fd, &buffer);
-        if (count == -1)
-            return (free(buffer), NULL);
-        line = seg_line(buffer);
-        if (!line)
-            return (free(buffer), NULL);
-        remaining = seg_rest(buffer);
-        if (!remaining)
-            return (free(buffer), line);
-        free(buffer);
-        buffer = remaining;
+    count = read_buff(fd, &buffer);
+    if (count == -1)
+        return (free(buffer), NULL);
+    line = seg_line(buffer);
+    if (!line)
+        return (free(buffer), NULL);
+    remaining = seg_rest(buffer);
+    if (!remaining)
         return (line);
+    free(buffer);
+    buffer = remaining;
+    return (line);
 }
