@@ -58,14 +58,14 @@ char	*ft_strjoin(char *s1, char *s2)
 	
 	if (!s1)
 	{
-		s1 = malloc(sizeof(char) * 1);
+		s1 = malloc(sizeof(char));
 		if (!s1)
 			return (NULL);
 		s1[0] = '\0';
 	}
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	sd = ft_calloc(sizeof(char), (s1_len + s2_len + 1));
+	sd = ft_calloc((s1_len + s2_len + 1), sizeof(char));
 	if (!sd)
 		return (NULL);
 	ft_memcpy(sd, s1, s1_len);

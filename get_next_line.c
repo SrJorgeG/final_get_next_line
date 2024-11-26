@@ -23,11 +23,11 @@ char    *seg_rest(char *buff)
     temp = ft_strchr(buff, '\n');
     if (!temp)
         return (NULL);
-    size_rest = ft_strlen(++temp);   
+    size_rest = ft_strlen(temp + 1);   
     rst = ft_calloc(size_rest + 1, sizeof(char)); 
     if (!rst)
         return (NULL);
-    ft_memcpy(rst, temp, size_rest);
+    ft_memcpy(rst, temp + 1, size_rest);
     return (rst);
 }
 
@@ -61,9 +61,7 @@ int    read_buff(int fd, char **stat)
     while (count > 0 && !ft_strchr(*stat, '\n'))
     {
         count = read(fd, buff, BUFFER_SIZE);
-        if (count <= 0 )
-            return (-1);
-        if (count == 0)
+        if (count < 0 )
             return (-1);
         buff[count] = '\0';
         *stat = ft_strjoin(*stat, buff);
@@ -73,21 +71,23 @@ int    read_buff(int fd, char **stat)
 
 char    *get_next_line(int fd)
 {
-    static char *rest;
-    char        *line;
+    static char *buffer;
+    char		*line;
     char        *remaining;
-    int         count;
-    
+    int			count;
+
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-    count = read_buff(fd, &rest);
-    if (count == -1)
-        return (free(rest), NULL);
-    line = seg_line(rest);
-    if (!line)
-        return (free(rest), NULL);
-    remaining = seg_rest(rest);
-    free(rest);
-    rest = remaining;
-    return (line);
+        count = read_buff(fd, &buffer);
+        if (count == -1)
+            return (free(buffer), NULL);
+        line = seg_line(buffer);
+        if (!line)
+            return (free(buffer), NULL);
+        remaining = seg_rest(buffer);
+        if (!remaining)
+            return (free(buffer), line);
+        free(buffer);
+        buffer = remaining;
+        return (line);
 }
