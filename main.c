@@ -6,31 +6,25 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:54:17 by jorge             #+#    #+#             */
-/*   Updated: 2024/11/20 18:42:03 by jorge            ###   ########.fr       */
+/*   Updated: 2024/11/27 13:18:56 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "get_next_line.h"
 
 int main (void)
 {
-	int fd = open("file.txt", O_RDONLY);
+	int		fd;
 	char	*line;
 
-	while ((line = get_next_line(fd)) != NULL)
+	fd = open("file.txt", O_RDONLY);
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
-		printf("%s\n", line);
+		printf("%s", line);
 		free(line);
+		line = get_next_line(fd);
 	}		
-	free(line);
 	close(fd);
-    //line = get_next_line(fd);
-	//printf("\n%s\n",line);
-    //line = get_next_line(fd);
-	// printf("\n%s\n",line);
-	//line = get_next_line(fd);
-	// printf("\n%s\n",line);
-	// free (line);
+	return (0);
 }

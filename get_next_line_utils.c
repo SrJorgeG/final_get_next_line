@@ -6,7 +6,7 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:53:57 by jorge             #+#    #+#             */
-/*   Updated: 2024/11/20 07:27:15 by jorge            ###   ########.fr       */
+/*   Updated: 2024/11/27 13:26:32 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,21 @@ size_t	ft_strlen(char *s)
 
 char	*ft_strchr(char *s, int c)
 {
-	size_t	i;
-	size_t	len;
-
-	i = 0;
-	len = ft_strlen(s);
-	while (s && i < len)
-		if (s[i++] == c)
-			return (&s[i - 1]);
+	if (!s)
+		return (NULL);
+	while (*s)
+	{
+		if (*s == (char)c)
+			return (s);
+		s++;
+	}	
 	return (NULL);
 }
 
 void	*ft_memcpy(char *dst, char *src, size_t n)
 {
 	if (!src)
-		return (NULL);
+		return (dst);
 	while (n--)
 	{
 		*dst = *src;
@@ -56,34 +56,28 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	s1_len;
 	size_t	s2_len;
 	
-	if (!s1)
-	{
-		s1 = malloc(sizeof(char));
-		if (!s1)
-			return (NULL);
-		s1[0] = '\0';
-	}
+	if (!s2)
+		return (free(s1), NULL);
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	sd = ft_calloc((s1_len + s2_len + 1), sizeof(char));
 	if (!sd)
-		return (NULL);
+		return (free(s1), NULL);
 	ft_memcpy(sd, s1, s1_len);
 	ft_memcpy(sd + s1_len, s2, s2_len);
-	free(s1);
-	return (sd);
+	return (free(s1), sd);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	unsigned char	*z;
-	size_t	len;
-	size_t	i;
+	size_t			len;
+	size_t			i;
 	
 	i = 0;
-	len = nmemb * size;
 	if (nmemb && size > SIZE_MAX / nmemb)
 		return (NULL);
+	len = nmemb * size;
 	z = malloc(len);
 	if (z)
 		while (i < len)
