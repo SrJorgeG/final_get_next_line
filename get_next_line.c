@@ -6,7 +6,7 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:54:04 by jorge             #+#    #+#             */
-/*   Updated: 2024/11/27 13:25:48 by jorge            ###   ########.fr       */
+/*   Updated: 2024/12/01 19:58:21 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,24 @@ static char    *seg_line(char *buff)
 
 static ssize_t	read_buff(int fd, char **stat)
 {
-	char		buff[BUFFER_SIZE + 1];
+	char		*buff;
 	ssize_t		count;
 
 	count = 1;
+	buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buff)
+		return (-1);
 	while (count > 0 && !ft_strchr(*stat, '\n'))
 	{
 		count = read(fd, buff, BUFFER_SIZE);
 		if (count < 0)
-			return (-1);
+			return (free(buff), -1);
 		buff[count] = '\0';
 		*stat = ft_strjoin(*stat, buff);
 		if (!*stat)
-			return (-1);
+			return (free(buff), -1);
 	}
-	return (count);
+	return (free(buff), count);
 }
 
 char    *get_next_line(int fd)
