@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jgomez-d <jgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:53:57 by jorge             #+#    #+#             */
-/*   Updated: 2024/11/27 13:26:32 by jorge            ###   ########.fr       */
+/*   Updated: 2024/12/02 02:19:05 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strchr(char *s, int c)
 		if (*s == (char)c)
 			return (s);
 		s++;
-	}	
+	}
 	return (NULL);
 }
 
@@ -55,7 +55,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*sd;
 	size_t	s1_len;
 	size_t	s2_len;
-	
+
 	if (!s2)
 		return (free(s1), NULL);
 	s1_len = ft_strlen(s1);
@@ -73,7 +73,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	unsigned char	*z;
 	size_t			len;
 	size_t			i;
-	
+
 	i = 0;
 	if (nmemb && size > SIZE_MAX / nmemb)
 		return (NULL);

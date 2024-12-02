@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jgomez-d <jgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:54:04 by jorge             #+#    #+#             */
-/*   Updated: 2024/12/01 19:58:21 by jorge            ###   ########.fr       */
+/*   Updated: 2024/12/02 02:17:50 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 static int	seg_rest(char **buff)
 {
-	char    *rst;
-	int     size_rest;
-	char    *temp;
+	char	*rst;
+	int		size_rest;
+	char	*temp;
 
 	temp = ft_strchr(*buff, '\n');
 	if (!temp)
@@ -35,17 +35,17 @@ static int	seg_rest(char **buff)
 
 // ESTA FUNCION DEVUELVE LA LINEA QUE QUEREMOS DEVOLVER DEL BUFFER LEIDO 
 
-static char    *seg_line(char *buff)
+static char	*seg_line(char *buff)
 {
-	char    *line;
-	int     size_line;
-	char    *temp;
+	char	*line;
+	int		size_line;
+	char	*temp;
 
 	temp = ft_strchr(buff, '\n');
 	if (!temp)
 		return (ft_strjoin(NULL, buff));
 	size_line = ft_strlen(buff) - ft_strlen(++temp);
-	line = ft_calloc(size_line + 1, sizeof(char)); 
+	line = ft_calloc(size_line + 1, sizeof(char));
 	if (!line)
 		return (NULL);
 	ft_memcpy(line, buff, size_line);
@@ -76,7 +76,7 @@ static ssize_t	read_buff(int fd, char **stat)
 	return (free(buff), count);
 }
 
-char    *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static char	*rest = NULL;
 	char		*line;

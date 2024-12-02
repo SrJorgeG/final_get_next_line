@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jgomez-d <jgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:54:12 by jorge             #+#    #+#             */
-/*   Updated: 2024/12/02 01:47:21 by jorge            ###   ########.fr       */
+/*   Updated: 2024/12/02 02:23:45 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #  define BUFFER_SIZE 256
 # endif
 
-# include <limits.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -28,7 +27,7 @@
 char		*get_next_line(int fd);
 size_t		ft_strlen(char *s);
 char		*ft_strchr(char *s, int c);
-void		*ft_memcpy(char *dst,char *src, size_t n);
+void		*ft_memcpy(char *dst, char *src, size_t n);
 char		*ft_strjoin(char *s1, char *s2);
 void		*ft_calloc(size_t nmemb, size_t size);
 
