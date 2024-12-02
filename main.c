@@ -6,11 +6,11 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:54:17 by jorge             #+#    #+#             */
-/*   Updated: 2024/11/27 13:18:56 by jorge            ###   ########.fr       */
+/*   Updated: 2024/12/02 01:42:09 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int main (void)
 {
